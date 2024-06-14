@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @import '@mantine/core/styles.css';
+
+  a {
+    color: var(--mantine-color-text);
+    @apply !no-underline;
+  }
+
+  a:hover {
+    @apply text-primary-300;
+  }
+}
