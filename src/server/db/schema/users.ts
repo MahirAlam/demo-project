@@ -1,6 +1,14 @@
 import { relations, sql } from "drizzle-orm";
-import { index, integer, primaryKey, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import {
+  index,
+  integer,
+  primaryKey,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
+
 import { createTable } from ".";
 
 export const users = createTable("user", {
@@ -42,7 +50,7 @@ export const accounts = createTable(
       columns: [account.provider, account.providerAccountId],
     }),
     userIdIdx: index("account_userId_idx").on(account.userId),
-  })
+  }),
 );
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
@@ -65,7 +73,7 @@ export const sessions = createTable(
   },
   (session) => ({
     userIdIdx: index("session_userId_idx").on(session.userId),
-  })
+  }),
 );
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -84,5 +92,5 @@ export const verificationTokens = createTable(
   },
   (vt) => ({
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  })
+  }),
 );

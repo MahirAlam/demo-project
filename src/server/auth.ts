@@ -1,8 +1,8 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import {
-  getServerSession,
   type DefaultSession,
   type NextAuthOptions,
+  getServerSession,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
 import DiscordProvider from "next-auth/providers/discord";
@@ -14,7 +14,7 @@ import {
   sessions,
   users,
   verificationTokens,
-} from "@/server/db/schema";
+} from "@/server/db/schema/users";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`

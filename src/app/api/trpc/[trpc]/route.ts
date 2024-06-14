@@ -24,8 +24,9 @@ const handler = (req: NextRequest) =>
     onError:
       env.NODE_ENV === "development"
         ? ({ path, error }) => {
+            // eslint-disable-next-line no-console -- logging error if there is no path
             console.error(
-              `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`
+              `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`,
             );
           }
         : undefined,

@@ -1,17 +1,18 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+// eslint-disable-next-line camelcase -- because It is unstable so it should be named this way
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import { useState } from "react";
-import SuperJSON from "superjson";
+import json from "superjson";
 
 import { type AppRouter } from "@/server/api/root";
 
 const createQueryClient = () => new QueryClient();
 
-let clientQueryClientSingleton: QueryClient | undefined = undefined;
+let clientQueryClientSingleton: QueryClient | undefined;
 const getQueryClient = () => {
   if (typeof window === "undefined") {
     // Server: always make a new query client
@@ -40,6 +41,7 @@ export type RouterOutputs = inferRouterOutputs<AppRouter>;
 export function TrpcProvider(props: { children: React.ReactNode }) {
   const queryClient = getQueryClient();
 
+  // eslint-disable-next-line react/hook-use-state -- because I don't need to set The Client
   const [trpcClient] = useState(() =>
     api.createClient({
       links: [
@@ -49,16 +51,16 @@ export function TrpcProvider(props: { children: React.ReactNode }) {
             (op.direction === "down" && op.result instanceof Error),
         }),
         unstable_httpBatchStreamLink({
-          transformer: SuperJSON,
-          url: getBaseUrl() + "/api/trpc",
+          transformer: json,
+          url: `${getBaseUrl()}/api/trpc`,
           headers: () => {
             const headers = new Headers();
-            headers.set("x-trpc-source", "ani-got");
+            headers.set("x-trpc-source", "ani-god");
             return headers;
           },
         }),
       ],
-    })
+    }),
   );
 
   return (
@@ -73,5 +75,5 @@ export function TrpcProvider(props: { children: React.ReactNode }) {
 function getBaseUrl() {
   if (typeof window !== "undefined") return window.location.origin;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return `http://localhost:${process.env.PORT ?? 3000}`;
+  return `http://localhost:${process.env.PORT ?? "3000"}`;
 }
